@@ -164,10 +164,25 @@ direto no navegador, e salvo no repositório via API do GitHub (Contents API).
 - Cada salvamento gera um commit individual no repositório. O GitHub Pages
   rebuilda automaticamente — as mudanças aparecem em ~30-60s.
 
+## Botão "Organizar!" (agente Cowork)
+
+Cada página de projeto tem um botão "Organizar!" no cabeçalho, ao lado do
+link do Notion. Ele abre uma nova conversa em `claude.ai/new` com um prompt
+pronto (`assets/cowork.js`), pedindo para o Claude:
+
+1. Ler o `data/<id>.json` atual do projeto (incluído no prompt).
+2. Localizar, no navegador, o grupo de abas verticais correspondente ao
+   projeto (pré-requisito: extensão Claude para Chrome instalada, com acesso
+   às abas/grupos).
+3. Classificar cada aba em pastas Drive (externo/interno/assets), links
+   organizacionais (Notion/ChatGPT/Claude/Asana) ou referências soltas, e
+   mesclar com o JSON existente sem duplicar.
+4. Mostrar o JSON atualizado para revisão e, só após confirmação, commitar
+   `data/<id>.json` no repositório via conector do GitHub do Claude.
+
+A criação de novos projetos continua manual, pelo modal "+ Novo projeto".
+
 ## Fora de escopo (fases futuras)
 
-- **"Cowork" agente de organização automática**: ao sinalizar, um agente
-  organizaria links/pastas no formato deste hub automaticamente. Projeto
-  separado, com seu próprio design.
 - **Polish visual "sala 8-bit"**: referência visual com personagens 8-bit
   representando projetos/clientes, a ser trazida e desenhada depois.

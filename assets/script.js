@@ -344,6 +344,7 @@ function renderHeader() {
       <div class="header-title">
         <h1>${currentData.name}</h1>
         ${currentData.notionUrl ? `<a class="notion-link" href="${currentData.notionUrl}" target="_blank" rel="noopener">${icon("notion")} Notion →</a>` : ""}
+        <button class="notion-link organize-btn" data-action="organize" title="Organizar com Claude">${icon("claude")} Organizar!</button>
       </div>
       ${statusPill(currentData.status)}
       ${rowActions("header", { deletable: false })}
@@ -454,6 +455,11 @@ async function handleProjectClick(e) {
     return;
   }
   const { action, path } = btn.dataset;
+
+  if (action === "organize") {
+    window.open(buildClaudeUrl(buildOrganizeProjectPrompt(currentData, currentId)), "_blank", "noopener");
+    return;
+  }
 
   if (action === "edit") {
     editingPath = path;
