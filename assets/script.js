@@ -272,8 +272,12 @@ function linkRow(item, path, schemaKey) {
 
 function refRow(item, path) {
   if (editingPath === path) {
-    const fields = FIELD_SCHEMAS.references.map((f) => fieldInput(f, item[f.key])).join("");
-    return `<div class="link-row editing" data-path="${path}">${fields}${editActions(path)}</div>`;
+    const safeUrl = (item.url || "").toString().replace(/"/g, "&quot;");
+    return `
+      <div class="link-row editing" data-path="${path}">
+        <input type="url" data-field="url" value="${safeUrl}" placeholder="Cole o link aqui" autofocus>
+        ${editActions(path)}
+      </div>`;
   }
   return `
     <div class="ref-row" data-url="${item.url}">
@@ -307,7 +311,15 @@ function deadlineItem(item, path) {
 }
 
 function addButton(path, label) {
-  return `<button class="add-row-btn" data-action="add" data-path="${path}">${icon("plus")} ${label}</button>`;
+  return `<button class="add-row-btn" data-action="add" data-path="${path}" title="${label}">${icon("plus")}</button>`;
+}
+
+function labelFromUrl(url) {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
 }
 
 // ---------- header ----------
@@ -513,8 +525,23 @@ async function handleProjectClick(e) {
 
     const form = btn.closest("[data-path]");
     const schemaKey = schemaKeyForPath(path);
-    const item = {};
-    form.querySelectorAll("[data-field]").forEach((input) => (item[input.dataset.field] = input.value.trim()));
+    let item;
+    if (schemaKey === "references") {
+      const url = form.querySelector('[data-field="url"]').value.trim();
+      if (!url) {
+        if (path === newItemPath) {
+          removeAtPath(currentData, path);
+          newItemPath = null;
+        }
+        editingPath = null;
+        render();
+        return;
+      }
+      item = { label: labelFromUrl(url), url, type: "", icon: "link" };
+    } else {
+      item = {};
+      form.querySelectorAll("[data-field]").forEach((input) => (item[input.dataset.field] = input.value.trim()));
+    }
     setAtPath(currentData, path, item);
     editingPath = null;
     newItemPath = null;
