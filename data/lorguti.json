@@ -1,0 +1,31 @@
+{
+  "name": "Lorguti — Controle de Loja",
+  "accentColor": "#6C5CE7",
+  "image": "assets/covers/lorguti.svg",
+  "status": "ativo",
+  "notionUrl": "https://notion.so/lorguti-controle-de-loja",
+  "drive": {
+    "externo": [
+      { "label": "Apresentações", "url": "https://drive.google.com/drive/folders/exemplo-externo" }
+    ],
+    "interno": [
+      { "label": "Working files", "url": "https://drive.google.com/drive/folders/exemplo-interno" },
+      { "label": "Planilhas de controle", "url": "https://drive.google.com/drive/folders/exemplo-planilhas" }
+    ],
+    "assets": [
+      { "label": "Imagens / Pixel art", "url": "https://drive.google.com/drive/folders/exemplo-assets" }
+    ]
+  },
+  "organizational": [
+    { "label": "Notion — reuniões", "url": "https://notion.so/exemplo-reunioes", "icon": "notion" },
+    { "label": "ChatGPT — conversa contínua", "url": "https://chatgpt.com/g/exemplo", "icon": "chatgpt" },
+    { "label": "Claude — dev / pesquisa", "url": "https://claude.ai/chat/exemplo", "icon": "claude" },
+    { "label": "Asana — tarefas", "url": "https://app.asana.com/exemplo", "icon": "asana" }
+  ],
+  "references": [
+    { "label": "Banca v8 (HTML)", "type": "protótipo", "url": "https://example.com/banca-v8.html", "icon": "link" },
+    { "label": "Ref — caixa registradora", "type": "imagem", "url": "https://example.com/ref-caixa.png", "icon": "image" },
+    { "label": "Pixel art refs", "type": "moodboard", "url": "https://example.com/pixel-art-refs", "icon": "image" },
+    { "label": "Stripe — design system", "type": "site", "url": "https://stripe.com", "icon": "link" }
+  ]
+}

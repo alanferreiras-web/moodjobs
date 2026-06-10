@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>moodjobs — mockup</title>
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --border: #e4e4e4;
+    --bg-soft: #fafafa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 48px;
+    background: transparent;
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  h1, h2, h3 { font-weight: 500; margin: 0; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- shared ---------- */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+  }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .pill.ativo { color: #1f7a4d; border-color: #cdebda; background: #f0faf4; }
+  .pill.ativo .dot { background: #2fb872; }
+  .pill.aguardando { color: #9a6b00; border-color: #f3e3b8; background: #fdf8ec; }
+  .pill.aguardando .dot { background: #f0b429; }
+  .pill.pausado { color: #6b6b6b; border-color: var(--border); background: #f5f5f5; }
+  .pill.pausado .dot { background: #a0a0a0; }
+  .pill.concluido { color: #3656c2; border-color: #d4ddf7; background: #f0f3fd; }
+  .pill.concluido .dot { background: #5b7ce6; }
+
+  .link-list { display: flex; flex-direction: column; gap: 6px; }
+  .link-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 14px;
+    transition: border-color .12s ease;
+  }
+  .link-item:hover { border-color: #c9c9c9; }
+
+  .label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--muted); font-weight: 500; margin-bottom: 10px;
+  }
+  .sublabel {
+    font-size: 12px; color: var(--muted); font-weight: 400;
+    margin: 14px 0 6px;
+  }
+  .sublabel:first-of-type { margin-top: 0; }
+
+  .section-title {
+    font-size: 13px; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--muted); font-weight: 500; margin-bottom: 14px;
+  }
+
+  /* ---------- demo separator ---------- */
+  .demo-separator {
+    margin: 64px 0; padding-top: 32px; border-top: 1px dashed var(--border);
+    font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em;
+  }
+
+  /* ================= INDEX (HUB) ================= */
+  .hub-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 32px;
+  }
+  .hub-header h1 { font-size: 20px; }
+  .new-project-btn {
+    font-size: 13px; font-weight: 500;
+    padding: 8px 14px; border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .new-project-btn:hover { border-color: #c9c9c9; }
+
+  .project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 16px;
+  }
+  .project-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color .12s ease;
+  }
+  .project-card:hover { border-color: #c9c9c9; }
+  .project-card .accent-block {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card .accent-block img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .project-card .accent-block.empty {
+    display: flex; align-items: center; justify-content: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .project-card .accent-block.empty .upload-hint {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font-size: 12px; color: rgba(0,0,0,.45); font-weight: 500;
+  }
+  .project-card .accent-block.empty .upload-hint .plus {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: rgba(0,0,0,.45);
+  }
+  .project-card .card-body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .project-card h3 { font-size: 15px; }
+  .project-card .pill { align-self: flex-start; }
+
+  /* ================= PROJECT PAGE ================= */
+  .back-link {
+    font-size: 12px; color: var(--muted); display: inline-flex;
+    align-items: center; gap: 4px; margin-bottom: 16px;
+  }
+  .back-link:hover { color: var(--fg); }
+
+  .project-page-header {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    padding-left: 16px;
+  }
+  .project-page-header .accent-bar {
+    position: absolute; top: 0; left: 0; bottom: 20px; width: 4px;
+  }
+  .project-page-header h1 { font-size: 22px; margin-right: auto; }
+  .notion-link { font-size: 13px; font-weight: 500; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+  .notion-link:hover { color: var(--fg); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .box {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  /* references table */
+  .ref-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .ref-table th {
+    text-align: left;
+    font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+    color: var(--muted); font-weight: 500;
+    padding: 0 10px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: var(--bg-soft); }
+  .ref-table a { font-weight: 500; }
+  .ref-table .ref-meta { color: var(--muted); }
+
+  @media (max-width: 720px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ================= INDEX (HUB) ================= -->
+  <div class="hub-header">
+    <h1>moodjobs</h1>
+    <button class="new-project-btn">+ Novo projeto</button>
+  </div>
+
+  <div class="project-list">
+    <a class="project-card" href="#projeto-x" style="text-decoration:none; color:inherit;">
+      <div class="accent-block">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%236C5CE7'/%3E%3Crect x='30' y='30' width='60' height='60' fill='%23ffffff' opacity='.25'/%3E%3Crect x='110' y='90' width='60' height='60' fill='%23ffffff' opacity='.18'/%3E%3Crect x='50' y='120' width='40' height='40' fill='%23ffffff' opacity='.3'/%3E%3C/svg%3E" alt="Capa do projeto Lorguti">
+      </div>
+      <div class="card-body">
+        <h3>Lorguti — Controle de Loja</h3>
+        <span class="pill ativo"><span class="dot"></span>Ativo</span>
+      </div>
+    </a>
+    <a class="project-card" href="#" style="text-decoration:none; color:inherit;">
+      <div class="accent-block empty" style="background:#00B89422;">
+        <div class="upload-hint"><span class="plus">+</span>Adicionar imagem</div>
+      </div>
+      <div class="card-body">
+        <h3>Limão Bueno</h3>
+        <span class="pill aguardando"><span class="dot"></span>Aguardando feedback</span>
+      </div>
+    </a>
+    <a class="project-card" href="#" style="text-decoration:none; color:inherit;">
+      <div class="accent-block empty" style="background:#FF767522;">
+        <div class="upload-hint"><span class="plus">+</span>Adicionar imagem</div>
+      </div>
+      <div class="card-body">
+        <h3>Nubank Brand Refresh</h3>
+        <span class="pill pausado"><span class="dot"></span>Pausado</span>
+      </div>
+    </a>
+    <a class="project-card" href="#" style="text-decoration:none; color:inherit;">
+      <div class="accent-block empty" style="background:#0984E322;">
+        <div class="upload-hint"><span class="plus">+</span>Adicionar imagem</div>
+      </div>
+      <div class="card-body">
+        <h3>Cases — Portfólio</h3>
+        <span class="pill concluido"><span class="dot"></span>Concluído</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="demo-separator">↓ exemplo de página de projeto (projeto.html?id=lorguti) ↓</div>
+
+  <!-- ================= PROJECT PAGE ================= -->
+  <a id="projeto-x"></a>
+  <a class="back-link" href="#">← moodjobs</a>
+  <div class="project-page-header">
+    <div class="accent-bar" style="background:#6C5CE7;"></div>
+    <h1>Lorguti — Controle de Loja</h1>
+    <span class="pill ativo"><span class="dot"></span>Ativo</span>
+    <a class="notion-link" href="#">Notion →</a>
+  </div>
+
+  <div class="two-col">
+    <div class="box">
+      <div class="section-title">Pastas Drive</div>
+
+      <div class="sublabel">Externo / Cliente</div>
+      <div class="link-list">
+        <div class="link-item">📁 Apresentações</div>
+      </div>
+
+      <div class="sublabel">Interno</div>
+      <div class="link-list">
+        <div class="link-item">📁 Working files</div>
+        <div class="link-item">📁 Planilhas de controle</div>
+      </div>
+
+      <div class="sublabel">Assets</div>
+      <div class="link-list">
+        <div class="link-item">📁 Imagens / Pixel art</div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="section-title">Links Organizacionais</div>
+      <div class="link-list">
+        <div class="link-item">Notion — reuniões</div>
+        <div class="link-item">ChatGPT — conversa contínua</div>
+        <div class="link-item">Claude — dev / pesquisa</div>
+        <div class="link-item">Asana — tarefas</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="section-title">Referências / Links soltos</div>
+    <table class="ref-table">
+      <thead>
+        <tr><th>Nome</th><th>Tipo</th><th>Link</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Banca v8</td>
+          <td class="ref-meta">HTML / protótipo</td>
+          <td><a href="#">abrir →</a></td>
+        </tr>
+        <tr>
+          <td>Ref — caixa registradora</td>
+          <td class="ref-meta">imagem</td>
+          <td><a href="#">abrir →</a></td>
+        </tr>
+        <tr>
+          <td>Pixel art refs</td>
+          <td class="ref-meta">moodboard</td>
+          <td><a href="#">abrir →</a></td>
+        </tr>
+        <tr>
+          <td>Stripe — design system</td>
+          <td class="ref-meta">site</td>
+          <td><a href="#">abrir →</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>

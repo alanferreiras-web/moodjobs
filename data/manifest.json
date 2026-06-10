@@ -1,0 +1,27 @@
+[
+  {
+    "id": "lorguti",
+    "name": "Lorguti — Controle de Loja",
+    "status": "ativo",
+    "accentColor": "#6C5CE7",
+    "image": "assets/covers/lorguti.svg"
+  },
+  {
+    "id": "limao-bueno",
+    "name": "Limão Bueno",
+    "status": "aguardando",
+    "accentColor": "#00B894"
+  },
+  {
+    "id": "nubank-brand",
+    "name": "Nubank Brand Refresh",
+    "status": "pausado",
+    "accentColor": "#FF7675"
+  },
+  {
+    "id": "cases-portfolio",
+    "name": "Cases — Portfólio",
+    "status": "concluido",
+    "accentColor": "#0984E3"
+  }
+]
