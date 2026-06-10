@@ -23,5 +23,12 @@
     "name": "Cases — Portfólio",
     "status": "concluido",
     "accentColor": "#0984E3"
+  },
+  {
+    "id": "loop-rebranding",
+    "name": "loop rebranding",
+    "status": "ativo",
+    "accentColor": "#999999",
+    "image": ""
   }
 ]
