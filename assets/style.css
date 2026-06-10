@@ -105,6 +105,113 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid var(--border);
 }
 
+.row-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+.link-row:hover .row-actions,
+.deadline-item:hover .row-actions,
+.project-page-header:hover .row-actions {
+  opacity: 1;
+}
+
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+  flex-shrink: 0;
+  padding: 0;
+}
+.icon-btn:hover { border-color: #c9c9c9; color: var(--fg); }
+.icon-btn svg { width: 14px; height: 14px; }
+
+/* ---------- inline edit forms ---------- */
+.link-row.editing { gap: 8px; flex-wrap: wrap; }
+.link-row input,
+.link-row select,
+.ref-table input,
+.ref-table select,
+.deadline-item input {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--fg);
+  flex: 1;
+  min-width: 80px;
+}
+.link-row select,
+.ref-table select { flex: 0 0 110px; }
+
+.add-row-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  background: none;
+  width: 100%;
+}
+.add-row-btn:hover { border-color: #c9c9c9; color: var(--fg); }
+.add-row-btn svg { width: 14px; height: 14px; }
+
+/* ---------- modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.modal-box {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.modal-box h3 { font-size: 16px; }
+.modal-input {
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.btn-visualizar.primary {
+  background: var(--fg);
+  color: #fff;
+  border-color: var(--fg);
+}
+.btn-visualizar:disabled { opacity: .6; cursor: default; }
+
 .link-row .icon {
   flex-shrink: 0;
   width: 18px;
@@ -205,6 +312,12 @@ a { color: inherit; text-decoration: none; }
 }
 .hub-header h1 { font-size: 20px; }
 
+.hub-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .new-project-btn {
   font-size: 13px;
   font-weight: 500;
@@ -216,6 +329,21 @@ a { color: inherit; text-decoration: none; }
   transition: border-color .12s ease;
 }
 .new-project-btn:hover { border-color: #c9c9c9; }
+
+.gear-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+}
+.gear-btn:hover { border-color: #c9c9c9; color: var(--fg); }
+.gear-btn svg { width: 16px; height: 16px; }
 
 .project-list {
   display: grid;
@@ -329,6 +457,65 @@ a { color: inherit; text-decoration: none; }
   gap: 4px;
 }
 .notion-link:hover { color: var(--fg); }
+
+.header-edit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.header-edit input[type="text"],
+.header-edit input[type="url"] {
+  font: inherit;
+  font-size: 14px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--fg);
+}
+.header-edit input[type="text"] { flex: 1; min-width: 160px; font-weight: 500; }
+.header-edit input[type="url"] { flex: 2; min-width: 200px; }
+.header-edit select {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--fg);
+}
+.header-edit input[type="color"] {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: none;
+}
+.header-edit input[type="file"] {
+  font-size: 12px;
+  max-width: 160px;
+}
+
+/* ---------- toast ---------- */
+.save-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--fg);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+  z-index: 200;
+}
+.save-toast.show { opacity: 1; }
 
 /* ---------- deadlines ---------- */
 .deadline-list {

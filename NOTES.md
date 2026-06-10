@@ -138,15 +138,31 @@ Pills de status, cada um com cor própria. Conjunto inicial:
 ]
 ```
 
-## Como editar um projeto existente
+## Edição direto no app
 
-1. Abra `data/<id>.json` (ex: `data/lorguti.json`) e edite os campos:
-   pastas do Drive, links organizacionais, referências, datas de entrega,
-   status, cor, link do Notion, imagem de capa.
-2. Para mudar nome/status/cor exibidos no card do índice, atualize também a
-   entrada correspondente em `data/manifest.json`.
-3. Salve, faça commit e `git push` — o GitHub Pages atualiza automaticamente
-   em alguns segundos.
+Não há edição manual de arquivos JSON. Tudo é editado pela própria interface,
+direto no navegador, e salvo no repositório via API do GitHub (Contents API).
+
+- **Configuração inicial**: na página inicial, clique no ícone de engrenagem
+  e cole um Personal Access Token do GitHub (escopo `repo`). O token fica
+  salvo apenas no `localStorage` do navegador.
+- **Editar um item**: passe o mouse sobre uma linha (link, pasta, referência,
+  prazo) ou sobre o cabeçalho do projeto — aparece um ícone de lápis (editar)
+  e de lixeira (remover). Clique no lápis para transformar a linha em um
+  formulário inline; clique no ✓ para salvar (grava direto no
+  `data/<id>.json` via commit) ou no ✕ para cancelar.
+- **Adicionar item**: cada lista (pastas Drive, links organizacionais,
+  referências, datas de entrega) tem um botão "+" tracejado no final que
+  cria um novo item já em modo de edição.
+- **Editar cabeçalho**: o lápis no cabeçalho do projeto permite mudar nome,
+  status, cor de destaque, link do Notion e a imagem de capa (upload direto,
+  enviado para `assets/covers/<id>.<ext>`). Ao salvar, também atualiza a
+  entrada correspondente em `data/manifest.json`.
+- **Novo projeto**: o botão "+ Novo projeto" no hub abre um modal para o
+  nome; cria `data/<id>.json` (a partir de `_template.json`) e adiciona a
+  entrada em `manifest.json` automaticamente.
+- Cada salvamento gera um commit individual no repositório. O GitHub Pages
+  rebuilda automaticamente — as mudanças aparecem em ~30-60s.
 
 ## Fora de escopo (fases futuras)
 
