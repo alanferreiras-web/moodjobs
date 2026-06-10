@@ -61,14 +61,16 @@ moodjobs/
 Layout em coluna única (estilo "feed"), com a `accentColor` do projeto usada como
 acento no cabeçalho:
 
-1. **Cabeçalho**: nome do projeto + pill(s) de status + link "Notion →" (página
-   oficial do projeto no Notion).
+1. **Cabeçalho**: nome do projeto + link "Notion →" (página oficial do projeto
+   no Notion) lado a lado, e pill de status alinhado à direita.
 2. **Linha de duas colunas**:
    - **Pastas Drive**: subgrupos "Externo/Cliente", "Interno", "Assets", cada um
      com lista de links de pastas.
    - **Links Organizacionais**: Notion, ChatGPT, Claude, Asana (lista de links).
-3. **Referências / Links soltos**: bloco de largura total, lista de chips/botões
-   com links de referência.
+3. **Linha de duas colunas**:
+   - **Referências / Links soltos**: tabela com nome (+ tipo como subtexto) e
+     botão "Visualizar".
+   - **Datas de Entrega**: lista simples de prazos (data + descrição).
 
 ## Botões e ícones de link
 
@@ -120,7 +122,10 @@ Pills de status, cada um com cor própria. Conjunto inicial:
     { "label": "Asana", "url": "..." }
   ],
   "references": [
-    { "label": "Ref 1", "url": "..." }
+    { "label": "Ref 1", "url": "...", "type": "site", "icon": "link" }
+  ],
+  "deadlines": [
+    { "label": "Entrega X para o cliente", "date": "2026-06-20" }
   ]
 }
 ```
@@ -132,6 +137,16 @@ Pills de status, cada um com cor própria. Conjunto inicial:
   { "id": "projeto-x", "name": "Projeto X", "status": "ativo", "accentColor": "#6C5CE7" }
 ]
 ```
+
+## Como editar um projeto existente
+
+1. Abra `data/<id>.json` (ex: `data/lorguti.json`) e edite os campos:
+   pastas do Drive, links organizacionais, referências, datas de entrega,
+   status, cor, link do Notion, imagem de capa.
+2. Para mudar nome/status/cor exibidos no card do índice, atualize também a
+   entrada correspondente em `data/manifest.json`.
+3. Salve, faça commit e `git push` — o GitHub Pages atualiza automaticamente
+   em alguns segundos.
 
 ## Fora de escopo (fases futuras)
 

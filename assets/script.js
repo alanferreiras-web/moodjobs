@@ -49,14 +49,34 @@ function linkRow(item) {
 function refRow(item) {
   return `
     <tr>
-      <td class="ref-name"><span class="icon">${icon(item.icon)}</span>${item.label}</td>
-      <td class="ref-meta">${item.type || ""}</td>
+      <td class="ref-name">
+        <span class="icon">${icon(item.icon)}</span>
+        <div>
+          <div class="ref-label">${item.label}</div>
+          ${item.type ? `<div class="ref-meta">${item.type}</div>` : ""}
+        </div>
+      </td>
       <td class="ref-action">
         <a class="btn-visualizar" href="${item.url}" target="_blank" rel="noopener">
           Visualizar ${icon("external")}
         </a>
       </td>
     </tr>`;
+}
+
+const MONTHS_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+
+function formatDate(isoDate) {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  return `${day} ${MONTHS_PT[month - 1]}`;
+}
+
+function deadlineItem(item) {
+  return `
+    <div class="deadline-item">
+      <span class="deadline-date">${formatDate(item.date)}</span>
+      <span class="deadline-label">${item.label}</span>
+    </div>`;
 }
 
 // ---------- index (hub) ----------
@@ -123,6 +143,8 @@ async function renderProject() {
     .map((i) => refRow({ ...i, icon: i.icon || "link" }))
     .join("");
 
+  const deadlinesHtml = (data.deadlines || []).map(deadlineItem).join("");
+
   document.title = `${data.name} — moodjobs`;
 
   root.innerHTML = `
@@ -130,9 +152,11 @@ async function renderProject() {
 
     <div class="project-page-header">
       <div class="accent-bar" style="background:${data.accentColor || "#999"};"></div>
-      <h1>${data.name}</h1>
+      <div class="header-title">
+        <h1>${data.name}</h1>
+        ${data.notionUrl ? `<a class="notion-link" href="${data.notionUrl}" target="_blank" rel="noopener">${icon("notion")} Notion →</a>` : ""}
+      </div>
       ${statusPill(data.status)}
-      ${data.notionUrl ? `<a class="notion-link" href="${data.notionUrl}" target="_blank" rel="noopener">${icon("notion")} Notion →</a>` : ""}
     </div>
 
     <div class="two-col">
@@ -148,16 +172,19 @@ async function renderProject() {
       </div>
     </div>
 
-    <div class="box">
-      <div class="section-title">Referências / Links soltos</div>
-      ${
-        refHtml
-          ? `<table class="ref-table">
-              <thead><tr><th>Nome</th><th>Tipo</th><th></th></tr></thead>
-              <tbody>${refHtml}</tbody>
-            </table>`
-          : `<p class="sublabel">Nenhuma referência cadastrada.</p>`
-      }
+    <div class="two-col">
+      <div class="box">
+        <div class="section-title">Referências / Links soltos</div>
+        ${
+          refHtml
+            ? `<table class="ref-table"><tbody>${refHtml}</tbody></table>`
+            : `<p class="sublabel">Nenhuma referência cadastrada.</p>`
+        }
+      </div>
+      <div class="box">
+        <div class="section-title">Datas de Entrega</div>
+        ${deadlinesHtml || `<p class="sublabel">Nenhuma data cadastrada.</p>`}
+      </div>
     </div>`;
 }
 

@@ -27,5 +27,10 @@
     { "label": "Ref — caixa registradora", "type": "imagem", "url": "https://example.com/ref-caixa.png", "icon": "image" },
     { "label": "Pixel art refs", "type": "moodboard", "url": "https://example.com/pixel-art-refs", "icon": "image" },
     { "label": "Stripe — design system", "type": "site", "url": "https://stripe.com", "icon": "link" }
+  ],
+  "deadlines": [
+    { "label": "Entrega Banca v8 para o cliente", "date": "2026-06-20" },
+    { "label": "Revisão de pixel art", "date": "2026-07-03" },
+    { "label": "Apresentação final", "date": "2026-07-15" }
   ]
 }
