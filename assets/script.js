@@ -263,12 +263,9 @@ function linkRow(item, path, schemaKey) {
     return `<div class="link-row editing" data-path="${path}">${fields}${editActions(path)}</div>`;
   }
   return `
-    <div class="link-row">
+    <div class="link-row link-row-link" data-url="${item.url}">
       <span class="icon">${icon(item.icon)}</span>
       <span class="label">${item.label}</span>
-      <a class="btn-visualizar" href="${item.url}" target="_blank" rel="noopener">
-        Visualizar ${icon("external")}
-      </a>
       ${rowActions(path)}
     </div>`;
 }
@@ -276,29 +273,17 @@ function linkRow(item, path, schemaKey) {
 function refRow(item, path) {
   if (editingPath === path) {
     const fields = FIELD_SCHEMAS.references.map((f) => fieldInput(f, item[f.key])).join("");
-    return `
-      <tr data-path="${path}">
-        <td colspan="2">
-          <div class="link-row editing">${fields}${editActions(path)}</div>
-        </td>
-      </tr>`;
+    return `<div class="link-row editing" data-path="${path}">${fields}${editActions(path)}</div>`;
   }
   return `
-    <tr>
-      <td class="ref-name">
-        <span class="icon">${icon(item.icon)}</span>
-        <div>
-          <div class="ref-label">${item.label}</div>
-          ${item.type ? `<div class="ref-meta">${item.type}</div>` : ""}
-        </div>
-      </td>
-      <td class="ref-action">
-        <a class="btn-visualizar" href="${item.url}" target="_blank" rel="noopener">
-          Visualizar ${icon("external")}
-        </a>
-        ${rowActions(path)}
-      </td>
-    </tr>`;
+    <div class="ref-row" data-url="${item.url}">
+      <span class="icon">${icon(item.icon)}</span>
+      <div class="ref-text">
+        <div class="ref-label">${item.label}</div>
+        ${item.type ? `<div class="ref-meta">${item.type}</div>` : ""}
+      </div>
+      <button class="icon-btn" data-action="delete" data-path="${path}" title="Remover">${icon("x")}</button>
+    </div>`;
 }
 
 const MONTHS_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
@@ -402,6 +387,7 @@ function render() {
   const deadlinesHtml = deadlineItems.map((i, idx) => deadlineItem(i, `deadlines.${idx}`)).join("");
 
   document.title = `${currentData.name} — moodjobs`;
+  const accent = currentData.accentColor || "#999999";
 
   root.innerHTML = `
     <a class="back-link" href="index.html">${icon("link")} moodjobs</a>
@@ -409,11 +395,11 @@ function render() {
     ${renderHeader()}
 
     <div class="two-col">
-      <div class="box">
+      <div class="box box-highlight" style="border-color:${accent}66;">
         <div class="section-title">Pastas Drive</div>
         ${driveHtml}
       </div>
-      <div class="box">
+      <div class="box box-highlight" style="border-color:${accent}66;">
         <div class="section-title">Links Organizacionais</div>
         <div class="link-list">
           ${orgHtml}
@@ -422,10 +408,10 @@ function render() {
       </div>
     </div>
 
-    <div class="two-col">
+    <div class="two-col two-col-bottom">
       <div class="box">
         <div class="section-title">Referências / Links soltos</div>
-        <table class="ref-table"><tbody>${refHtml}</tbody></table>
+        <div class="ref-list">${refHtml}</div>
         ${addButton("references", "Adicionar referência")}
       </div>
       <div class="box">
@@ -448,7 +434,13 @@ function schemaKeyForPath(path) {
 
 async function handleProjectClick(e) {
   const btn = e.target.closest("[data-action]");
-  if (!btn) return;
+  if (!btn) {
+    const linkEl = e.target.closest("[data-url]");
+    if (linkEl && linkEl.dataset.url) {
+      window.open(linkEl.dataset.url, "_blank", "noopener");
+    }
+    return;
+  }
   const { action, path } = btn.dataset;
 
   if (action === "edit") {
